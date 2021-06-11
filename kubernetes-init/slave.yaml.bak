@@ -34,20 +34,20 @@ spec:
             requests:
               cpu: 1000m
               memory: 1024Mi
-          volumeMounts:
-            - name: jmeter-result
-              mountPath: /mnt/jmeter
-            - name: jmeter-script
-              mountPath: /mnt/jmeter/script
-              readOnly: true
+            volumeMounts:
+              - name: jmeter-result
+                mountPath: /mnt/jmeter
+              - name: jmeter-script
+                mountPath: /mnt/jmeter/script
+                readOnly: true
       volumes:
         - name: jmeter-result
           hostPath:
             path: PERSISTANCE
             type: DirectoryOrCreate
-        - name: jenkins-script
+        - name: jmeter-script
           configMap:
-            name: jenkins-script
+            name: jmeter-script
 ---
 apiVersion: v1
 kind: Service
