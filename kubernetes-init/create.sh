@@ -25,7 +25,7 @@ while true; do
   #update datetime
   sed -i -e 's/DATETIME/'$(date '+%Y-%m-%d_%H-%M-%S')'/g' $CONFIGPATH'slave'$COUNTER.yaml
   #update persistance path
-  sed -i '' 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'slave'$COUNTER.yaml
+  sed -i 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'slave'$COUNTER.yaml
 
   echo Config for Slave$COUNTER created
 
@@ -52,4 +52,4 @@ sed -i -e 's/JMXSCRIPT/'$script'/g' $CONFIGPATH'master.yaml'
 #update datetime
 sed -i -e 's/DATETIME/'$(date '+%Y-%m-%d_%H-%M-%S')'/g' $CONFIGPATH'master.yaml'
 #update persistance path
-sed -i '' 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'master.yaml'
+sed -i 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'master.yaml'
