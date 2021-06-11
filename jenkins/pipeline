@@ -35,7 +35,7 @@ pipeline {
                 withKubeCredentials(kubectlCredentials: [[credentialsId: 'kubernetes-perf-infra', namespace: 'jenkins', serverUrl: 'https://34.87.150.175']]) {
                    	echo 'Starting Execution'
                    	sh 'kubectl -n jenkins get pods'
-                    sh 'kubectl -n jenkins create configmap jmeter-script --from-file=`pwd`/kubernetes-init/data/script.jmx'
+                    sh 'kubectl -n jenkins create configmap -f jmeter-script --from-file=`pwd`/kubernetes-init/data/script.jmx'
     				sh 'cd `pwd`/kubernetes-init/config/; ls; i=1;while [ "$i" -le 2 ]; do kubectl apply -f slave$i.yaml; i=$(( i + 1 )); done'
     				sh 'sleep 60;'
                     echo 'Started Jmeter Slave Pods'
