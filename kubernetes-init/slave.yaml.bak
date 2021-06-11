@@ -3,6 +3,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  namespace: jenkins
   name: master
 spec:
   selector:
@@ -44,6 +45,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: jenkins
   name: master
 spec:
   selector:
