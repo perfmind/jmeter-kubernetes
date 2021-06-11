@@ -57,7 +57,7 @@ pipeline {
             steps {
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'gke_tk-perf_asia-southeast1_tk-perf-infra-cluster', contextName: 'gke_tk-perf_asia-southeast1_tk-perf-infra-cluster', credentialsId: 'kubernetes-perf-infra', namespace: 'jenkins', serverUrl: 'https://34.87.150.175']]) {
                     sh 'cd `pwd`/kubernetes-init/config/; ls; kubectl delete -f .;'
-                    echo 'Creating Pods for master & slave and Start execution'
+                    echo 'Deleting Pods for master & slave'
                 }
             }
         }

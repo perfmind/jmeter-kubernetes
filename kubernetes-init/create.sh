@@ -5,7 +5,7 @@ script=$2
 #shift #remove 2nd arg
 IP=""
 
-pwd=`pwd`
+pwd=$(pwd)
 #path to generate config files for kubernetes
 CONFIGPATH=$pwd/config/
 datadir=$pwd/data/
@@ -14,31 +14,30 @@ datadir=$pwd/data/
 mkdir -p $CONFIGPATH
 
 #slave
-while true
-do
- 
- #create a config for slave
- cp slave.yaml.bak $CONFIGPATH'slave'$COUNTER.yaml
- #modify values to slave
- sed -i -e 's/master/slave'$COUNTER'/g' $CONFIGPATH'slave'$COUNTER.yaml
- #update script name
- sed -i -e 's/JMXSCRIPT/'$script'/g' $CONFIGPATH'slave'$COUNTER.yaml
- #update datetime
- sed -i -e 's/DATETIME/'`date '+%Y-%m-%d_%H-%M-%S'`'/g' $CONFIGPATH'slave'$COUNTER.yaml
- #update persistance path
- sed -i 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'slave'$COUNTER.yaml
+while true; do
 
- echo Config for Slave$COUNTER created
+  #create a config for slave
+  cp slave.yaml.bak $CONFIGPATH'slave'$COUNTER.yaml
+  #modify values to slave
+  sed -i -e 's/master/slave'$COUNTER'/g' $CONFIGPATH'slave'$COUNTER.yaml
+  #update script name
+  sed -i -e 's/JMXSCRIPT/'$script'/g' $CONFIGPATH'slave'$COUNTER.yaml
+  #update datetime
+  sed -i -e 's/DATETIME/'$(date '+%Y-%m-%d_%H-%M-%S')'/g' $CONFIGPATH'slave'$COUNTER.yaml
+  #update persistance path
+  sed -i '' 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'slave'$COUNTER.yaml
 
- #break 
- if [[ $COUNTER -eq $skip ]]; then
-  IP=${IP}slave${COUNTER}
-  break
- else
-  IP=${IP}slave${COUNTER},
- fi
+  echo Config for Slave$COUNTER created
 
- let COUNTER=COUNTER+1
+  #break
+  if [[ $COUNTER -eq $skip ]]; then
+    IP=${IP}slave${COUNTER}
+    break
+  else
+    IP=${IP}slave${COUNTER},
+  fi
+
+  let COUNTER=COUNTER+1
 
 done
 
@@ -49,8 +48,8 @@ cp master.yaml.bak $CONFIGPATH''master.yaml
 sed -i -e 's/SERVERS/'$IP'/g' $CONFIGPATH''master.yaml
 
 #update script name
- sed -i -e 's/JMXSCRIPT/'$script'/g' $CONFIGPATH'master.yaml'
- #update datetime
- sed -i -e 's/DATETIME/'`date '+%Y-%m-%d_%H-%M-%S'`'/g' $CONFIGPATH'master.yaml'
- #update persistance path
- sed -i 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'master.yaml'
+sed -i -e 's/JMXSCRIPT/'$script'/g' $CONFIGPATH'master.yaml'
+#update datetime
+sed -i -e 's/DATETIME/'$(date '+%Y-%m-%d_%H-%M-%S')'/g' $CONFIGPATH'master.yaml'
+#update persistance path
+sed -i '' 's|PERSISTANCE|'$datadir'|g' $CONFIGPATH'master.yaml'
