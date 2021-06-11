@@ -45,7 +45,7 @@ spec:
           hostPath:
             path: PERSISTANCE
             type: DirectoryOrCreate
-        - name: jenkins-config
+        - name: jenkins-script
           configMap:
             name: jenkins-script
 ---
