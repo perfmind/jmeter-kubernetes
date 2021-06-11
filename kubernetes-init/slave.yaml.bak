@@ -1,5 +1,4 @@
 ---
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -17,31 +16,39 @@ spec:
         app: master
     spec:
       containers:
-      - name: master
-        image: shcode/jmeter
-        args: ["-n -t /mnt/jmeter/JMXSCRIPT -l /mnt/jmeter/results/result-DATETIME.jtl -j /mnt/jmeter/logs/master-log-DATETIME.log -R SERVERS"]
-        env:
-        - name: JVM_ARGS
-          value: "-Xms512m -Xmx1024m"
-        - name: mode
-          value: "master"
-        resources:
-          limits:
-            memory: 1024Mi
-            cpu: 1000m
-          requests:
-            cpu: 1000m
-            memory: 1024Mi
-        volumeMounts:
-          - name: master
-            mountPath: /mnt/jmeter
+        - name: master
+          image: shcode/jmeter
+          args:
+            [
+              "-n -t /mnt/jmeter/JMXSCRIPT -l /mnt/jmeter/results/result-DATETIME.jtl -j /mnt/jmeter/logs/master-log-DATETIME.log -R SERVERS",
+            ]
+          env:
+            - name: JVM_ARGS
+              value: "-Xms512m -Xmx1024m"
+            - name: mode
+              value: "master"
+          resources:
+            limits:
+              memory: 1024Mi
+              cpu: 1000m
+            requests:
+              cpu: 1000m
+              memory: 1024Mi
+          volumeMounts:
+            - name: jmeter-result
+              mountPath: /mnt/jmeter
+            - name: jmeter-script
+              mountPath: /mnt/jmeter/script
+              readOnly: true
       volumes:
-      - name: master
-        hostPath:
-          path: PERSISTANCE
-          type: DirectoryOrCreate 
+        - name: jmeter-result
+          hostPath:
+            path: PERSISTANCE
+            type: DirectoryOrCreate
+        - name: jenkins-config
+          configMap:
+            name: jenkins-script
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -56,3 +63,4 @@ spec:
   type: ClusterIP
 
 ---
+

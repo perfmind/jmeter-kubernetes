@@ -26,7 +26,7 @@ pipeline {
                 // change script.jmx with option from jenkins
                 sh 'mkdir -p `pwd`/kubernetes-init/data/;cp `pwd`/data/script.jmx `pwd`/kubernetes-init/data/script.jmx;'
                 sh 'cd `pwd`/kubernetes-init/;chmod 775 create.sh;./create.sh 2 script.jmx'
-                sh 'mkdir -p `pwd`/kubernetes-init/data/logs/;mkdir -p `pwd`/kubernetes-init/data/results/;'
+                sg 'kubectl -n jenkins create configmap jmeter-script --from-file=`pwd`/kubernetes-init/data/script.jmx'
                 echo 'kubernetes configuration for Jmeter Masters and Slaves created successfully'
                 //echo "current build number: ${currentBuild.number}"
             }

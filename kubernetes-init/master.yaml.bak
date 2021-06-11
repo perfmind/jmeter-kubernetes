@@ -9,7 +9,7 @@ spec:
   containers:
   - name: master
     image: shcode/jmeter
-    args: ["-n -t /mnt/jmeter/JMXSCRIPT -l /mnt/jmeter/results/result-DATETIME.jtl -j /mnt/jmeter/logs/master-log-DATETIME.log  -e -o /mnt/jmeter/HtmlReport-DATETIME -R SERVERS"]
+    args: ["-n -t /mnt/jmeter/script/JMXSCRIPT -l /mnt/jmeter/results/result-DATETIME.jtl -j /mnt/jmeter/logs/master-log-DATETIME.log  -e -o /mnt/jmeter/HtmlReport-DATETIME -R SERVERS"]
     env:
     - name: JVM_ARGS
       value: "-Xms512m -Xmx1024m"
@@ -23,13 +23,20 @@ spec:
         cpu: 1000m
         memory: 1024Mi
     volumeMounts:
-      - name: master
+      - name: jmeter-result
         mountPath: /mnt/jmeter
+      - name: jmeter-script
+        mountPath: /mnt/jmeter/script
+        readOnly: true
   volumes:
-    - name: master
+    - name: jmeter-result
       hostPath:
         path: PERSISTANCE
         type: DirectoryOrCreate
+    - name: jenkins-config
+      configMap:
+        name: jenkins-script
+
 
 ---
 
